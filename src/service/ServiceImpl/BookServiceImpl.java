@@ -31,6 +31,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book removeBookById(Long id) {
+        for (Book book : bookList) {
+            if (book.getId().longValue()==id){
+                bookList.remove(book);
+                return book;
+            }
+        }
         return null;
     }
 
@@ -54,13 +60,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBookByInitialLetter() {
-        return null;
+        System.out.println(bookList.stream().filter(z-> z.getName().startsWith("Э")).toList());
+        return bookList.stream().filter(x-> x.getName().startsWith("A")).toList();
     }
 
     @Override
     public Book maxPriceBook() {
-        Optional<Book> max = bookList.stream().max(Comparator.comparing(Book::getPrice));
-        System.out.println(max);
-        return null;
+//        Optional<Book> max = bookList.stream().max(Comparator.comparing(Book::getPrice));
+//        System.out.println(max);
+        return bookList.stream().sorted(Comparator.comparing(Book::getPrice)).findAny().orElseThrow();
     }
 }

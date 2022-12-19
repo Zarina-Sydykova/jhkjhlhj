@@ -1,5 +1,6 @@
 package service.ServiceImpl;
 
+import enums.Gender;
 import model.Book;
 import model.User;
 import service.UserService;
@@ -22,20 +23,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) {
-        for (User u:userList) {
-            if (u.getId()== u.getId().longValue()){
-                System.out.println(u);
-            }
 
-        }
-        return null;
+        return userList.stream().filter(user -> user.getId().equals(id)).findAny().orElseThrow();
     }
 
     @Override
     public String removeUserByName(String name) {
         for (User u:userList){
-            if (u.getName().equals(u.getName()){
-
+            if (u.getName().equals(name)){
+                userList.remove(u);
 
             }
         }
@@ -44,18 +40,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id) {
-
+        User user = (User) userList.stream().filter(x->x.getId().equals(id));
+        user.setId(new Scanner(System.in).nextLong());
+        user.setEmail(new Scanner(System.in).nextLine());
     }
 
     @Override
     public void groupUsersByGender() {
-        userList.collect(Collectors.groupingBy(x -> new ArrayList<String>(Arrays.asList(x.getGender.MALE, x.getGender.FEMALE())), Collectors.toSet()));
+        userList.stream().filter(user -> user.getGender().equals(Gender.FEMALE)).toList();
+        userList.forEach(System.out::println);
+        userList.stream().filter(user -> user.getGender().equals(Gender.MALE)).toList();
+        userList.forEach(System.out::println);
 
 
     }
 
     @Override
     public String buyBooks(String name, List<Book> books) {
+        for (User user : userList) {
+            if (user.getName().equals(name)){
+                for (Book book: books){
+                    if (book.getName().equals(name)){
+                        userList.add(user);
+                        books.add(book);
+                    }
+                }
+            }
+        }
         return null;
     }
 }
